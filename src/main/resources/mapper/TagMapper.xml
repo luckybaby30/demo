@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.dao.TagDao">
+    <resultMap type="com.example.demo.domain.Tag" id="TagResultMap">
+        <id property="tagId" jdbcType="INTEGER" column="tag_id"/>
+        <result property="tagName" jdbcType="VARCHAR" column="tag_name"/>
+        <result property="tagCount" jdbcType="INTEGER" column="tag_count"/>
+
+    </resultMap>
+
+    <sql id="Tag_Column_List">
+        tag_id, tag_name, tag_count
+    </sql>
+
+    <select id="listTags" resultMap="TagResultMap">
+    select
+    <include refid="Tag_Column_List"/>
+    from tag
+    </select>
+
+
+    <select id="selectByTagId" resultMap="TagResultMap" parameterType="java.lang.Integer">
+    select
+    <include refid="Tag_Column_List"/>
+    from tag where tag_id = #{tagId,jdbcType=INTEGER}
+    </select>
+
+    <delete id="delTagById" parameterType="java.lang.Integer">
+        delete from tag where tag_id = #{tagId,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insertTag" parameterType="com.example.demo.domain.Tag" useGeneratedKeys="true" keyProperty="tagId" keyColumn="tag_id">
+    insert into tag
+    <trim suffixOverrides="," suffix=")" prefix="(">
+        <if test="tagName != null">tag_name, </if>
+        <if test="tagCount != null">tag_count, </if>
+    </trim>
+
+    <trim suffixOverrides="," suffix=")" prefix="values (">
+        <if test="tagName != null">#{tagName,jdbcType=VARCHAR}, </if>
+        <if test="tagCount != null">#{tagCount,jdbcType=INTEGER}, </if>
+    </trim>
+
+    </insert>
+
+    <update id="updateTagById" parameterType="com.example.demo.domain.Tag">
+        update tag
+    <set>
+        <if test="tagName != null">tag_name = #{tagName,jdbcType=VARCHAR}, </if>
+        <if test="tagCount != null">tag_count = #{tagCount,jdbcType=INTEGER}, </if>
+    </set>
+    where tag_id = #{tagId,jdbcType=INTEGER}
+    </update>
+
+
+</mapper>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.dao.UserDao">
+    <resultMap type="com.example.demo.domain.User" id="UserResultMap">
+        <id property="userId" jdbcType="INTEGER" column="user_id"/>
+        <result property="userName" jdbcType="VARCHAR" column="user_name"/>
+        <result property="avatarUrl" jdbcType="VARCHAR" column="avatar_url"/>
+        <result property="phone" jdbcType="VARCHAR" column="phone"/>
+        <result property="regTime" jdbcType="DATE" column="reg_time"/>
+        <result property="loginTime" jdbcType="DATE" column="login_time"/>
+    </resultMap>
+
+    <sql id="User_Column_List">
+        user_id, user_name, avatar_url, phone, reg_time, login_time
+    </sql>
+
+    <select id="listUsers" resultMap="UserResultMap">
+        select
+        <include refid="User_Column_List"/>
+        from user_user
+    </select>
+
+
+    <select id="selectByUserId" resultMap="UserResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="User_Column_List"/>
+        from user_user where user_id = #{userId,jdbcType=INTEGER}
+    </select>
+
+    <delete id="delUserById" parameterType="java.lang.Integer">
+        delete from user_user where user_id = #{userId,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insertUser" parameterType="com.example.demo.domain.User" useGeneratedKeys="true" keyProperty="userId" keyColumn="user_id">
+        insert into user_user
+        <trim suffixOverrides="," suffix=")" prefix="(">
+            <if test="userName != null">user_name, </if>
+            <if test="avatarUrl != null">avatar_url, </if>
+            <if test="phone != null">phone, </if>
+            <if test="regTime != null">reg_time, </if>
+            <if test="loginTime != null">login_time, </if>
+        </trim>
+
+        <trim suffixOverrides="," suffix=")" prefix="values (">
+            <if test="userName != null">#{userName,jdbcType=VARCHAR}, </if>
+            <if test="avatarUrl != null">#{avatarUrl,jdbcType=VARCHAR}, </if>
+            <if test="phone != null">#{phone,jdbcType=VARCHAR}, </if>
+            <if test="regTime != null">#{regTime,jdbcType=DATE}, </if>
+            <if test="loginTime != null">#{loginTime,jdbcType=DATE}, </if>
+        </trim>
+
+    </insert>
+
+    <update id="updateUserById" parameterType="com.example.demo.domain.User">
+        update user_user
+        <set>
+            <if test="userName != null">user_name = #{userName,jdbcType=VARCHAR}, </if>
+            <if test="avatarUrl != null">avatar_url #{avatarUrl,jdbcType=VARCHAR}, </if>
+            <if test="phone != null">phone = #{phone,jdbcType=VARCHAR}, </if>
+            <if test="regTime != null">reg_time = #{regTime,jdbcType=DATE}, </if>
+            <if test="loginTime != null">login_time = #{loginTime,jdbcType=DATE}, </if>
+        </set>
+        where user_id = #{userId,jdbcType=INTEGER}
+    </update>
+
+
+</mapper>

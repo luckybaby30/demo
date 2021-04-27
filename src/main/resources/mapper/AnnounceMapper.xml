@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.dao.AnnounceDao">
+    <resultMap id="AnnounceResultMap" type="com.example.demo.domain.Announce">
+        <id property="announceId" jdbcType="INTEGER" column="announce_id"></id>
+        <result property="userId" jdbcType="INTEGER" column="user_id"/>
+        <result property="itemName" jdbcType="VARCHAR" column="item_name"/>
+        <result property="announceType" jdbcType="BIT" column="announce_type"/>
+        <result property="itemPhoto" jdbcType="VARCHAR" column="item_photo"/>
+        <result property="tagName" jdbcType="VARCHAR" column="tag_name"/>
+        <result property="itemDescription" jdbcType="VARCHAR" column="item_description"/>
+        <result property="itemTime" jdbcType="DATE" column="item_time"/>
+        <result property="itemPlace" jdbcType="VARCHAR" column="item_place"/>
+        <result property="contact" jdbcType="VARCHAR" column="contact"/>
+        <result property="isStatus" jdbcType="INTEGER" column="is_status"/>
+    </resultMap>
+
+    <sql id="Announce_Column_List">
+        announce_id, user_id, item_name, announce_type, item_photo, tag_name, item_description, item_time, item_place, contact, is_status
+    </sql>
+
+    <select id="listAnnounces" resultMap="AnnounceResultMap">
+        select
+        <include refid="Announce_Column_List"/>
+        from announce
+    </select>
+
+    <insert id="insertAnnounce" parameterType="com.example.demo.domain.Announce">
+        insert into announce
+        <trim suffixOverrides="," suffix=")" prefix="(">
+            <if test="userId != null">user_id, </if>
+            <if test="itemName != null">item_name, </if>
+            <if test="announceType != null">announce_Type, </if>
+            <if test="itemPhoto != null">item_photo, </if>
+            <if test="tagName != null">tag_name, </if>
+            <if test="itemDescription != null">item_description, </if>
+            <if test="itemTime != null">item_time, </if>
+            <if test="itemPlace != null">item_place, </if>
+            <if test="contact != null">contact, </if>
+            <if test="isStatus != null">is_status, </if>
+        </trim>
+
+        <trim suffixOverrides="," suffix=")" prefix="values (">
+            <if test="userId != null">#{userId,jdbcType=INTEGER},</if>
+            <if test="itemName != null">#{itemName,jdbcType=VARCHAR}, </if>
+            <if test="announceType != null">#{announceType,jdbcType=BIT}, </if>
+            <if test="itemPhoto != null">#{itemPhoto,jdbcType=VARCHAR}, </if>
+            <if test="tagName != null">#{tagName,jdbcType=VARCHAR}, </if>
+            <if test="itemDescription != null">#{itemDescription,jdbcType=VARCHAR}, </if>
+            <if test="itemTime != null">#{itemTime,jdbcType=DATE}, </if>
+            <if test="itemPlace != null">#{itemPlace,jdbcType=VARCHAR}, </if>
+            <if test="contact != null">#{contact,jdbcType=VARCHAR}, </if>
+            <if test="isStatus != null">#{isStatus,jdbcType=INTEGER}, </if>
+        </trim>
+    </insert>
+
+    <delete id="delAnnounceById" parameterType="java.lang.Integer">
+        delete from announce where announce_id = #{AnnounceId,jdbcType=INTEGER}
+    </delete>
+
+    <update id="updateAnnounceById" parameterType="com.example.demo.domain.Announce">
+        update announce
+        <set>
+            <if test="userId != null">user_id = #{userId,jdbcType=INTEGER},</if>
+            <if test="itemName != null">item_name = #{itemName,jdbcType=VARCHAR}, </if>
+            <if test="announceType != null">announce_type = #{announceType,jdbcType=BIT}, </if>
+            <if test="itemPhoto != null">item_photo = #{itemPhoto,jdbcType=VARCHAR}, </if>
+            <if test="tagName != null">tag_name = #{tagName,jdbcType=VARCHAR}, </if>
+            <if test="itemDescription != null">item_description = #{itemDescription,jdbcType=VARCHAR}, </if>
+            <if test="itemTime != null">item_time = #{itemTime,jdbcType=DATE}, </if>
+            <if test="itemPlace != null">item_place = #{itemPlace,jdbcType=VARCHAR}, </if>
+            <if test="contact != null">contact = #{contact,jdbcType=VARCHAR}, </if>
+            <if test="isStatus != null">is_status = #{isStatus,jdbcType=INTEGER}, </if>
+        </set>
+        where announce_id = #{announceId,jdbcType=INTEGER}
+    </update>
+
+
+
+</mapper>
