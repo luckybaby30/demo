@@ -2,22 +2,22 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.example.demo.dao.WxDao">
-    <resultMap type="com.example.demo.domain.Wx" id="WxResultMap">
+    <resultMap type="com.example.demo.domain.UserWx" id="WxResultMap">
         <id property="userId" jdbcType="INTEGER" column="user_id"/>
         <result property="openId" jdbcType="VARCHAR" column="open_id"/>
     </resultMap>
 
 
 
-    <select id="getUserId" resultMap="WxResultMap" parameterType="java.lang.String">
-        select user_id, open_id from wx where open_id = #{openId,jdbcType=VARCHAR}
+    <select id="getUserId" resultMap="WxResultMap" parameterType="String">
+        select * from wx where open_id = #{openId,jdbcType=VARCHAR}
     </select>
 
     <delete id="delTagById" parameterType="java.lang.Integer">
         delete from tag where tag_id = #{tagId,jdbcType=INTEGER}
     </delete>
 
-    <insert id="insertUserId" parameterType="com.example.demo.domain.Wx" useGeneratedKeys="true" keyProperty="userId" keyColumn="user_id">
+    <insert id="insertUserId" parameterType="com.example.demo.domain.UserWx" useGeneratedKeys="true" keyProperty="userId" keyColumn="user_id">
         insert into wx
         <trim suffixOverrides="," suffix=")" prefix="(">
             <if test="openId != null">open_id, </if>

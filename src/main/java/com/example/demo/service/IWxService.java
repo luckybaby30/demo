@@ -2,15 +2,15 @@ package com.example.demo.service;
 
 
 
-import com.example.demo.domain.Wx;
+import com.example.demo.domain.UserWx;
 
 import java.util.Map;
 
 public interface IWxService {
 
-    Wx getUserId(String openId);
+    UserWx getUserId(String openId);
 
-    void insertUserId(Wx wx);
+    void insertUserId(UserWx userWx);
 
     Map login(String code)throws Exception;
 }

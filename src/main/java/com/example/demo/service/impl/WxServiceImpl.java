@@ -1,7 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.dao.WxDao;
-import com.example.demo.domain.Wx;
+import com.example.demo.domain.UserWx;
 import com.example.demo.service.IWxService;
 import com.example.demo.utils.HttpsClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,15 +13,15 @@ import java.util.Map;
 @Service
 public class WxServiceImpl implements IWxService {
 
-    @Resource
+    @Autowired
     private WxDao wxDao;
 
-    public Wx getUserId(String openId) {
+    public UserWx getUserId(String openId) {
         return wxDao.getUserId(openId);
     }
 
-    public void insertUserId(Wx wx){
-        wxDao.insertUserId(wx);
+    public void insertUserId(UserWx userWx){
+        wxDao.insertUserId(userWx);
     }
 
     public Map login(String code) throws Exception {

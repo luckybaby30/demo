@@ -35,6 +35,7 @@
     <insert id="insertUser" parameterType="com.example.demo.domain.User" useGeneratedKeys="true" keyProperty="userId" keyColumn="user_id">
         insert into user_user
         <trim suffixOverrides="," suffix=")" prefix="(">
+            <if test="userId != null">user_id, </if>
             <if test="userName != null">user_name, </if>
             <if test="avatarUrl != null">avatar_url, </if>
             <if test="phone != null">phone, </if>
@@ -43,6 +44,7 @@
         </trim>
 
         <trim suffixOverrides="," suffix=")" prefix="values (">
+            <if test="userId != null">#{userId,jdbcType=INTEGER}, </if>
             <if test="userName != null">#{userName,jdbcType=VARCHAR}, </if>
             <if test="avatarUrl != null">#{avatarUrl,jdbcType=VARCHAR}, </if>
             <if test="phone != null">#{phone,jdbcType=VARCHAR}, </if>

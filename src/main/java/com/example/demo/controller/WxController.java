@@ -1,19 +1,13 @@
 package com.example.demo.controller;
 
 import com.example.demo.domain.User;
-import com.example.demo.domain.Wx;
+import com.example.demo.domain.UserWx;
 import com.example.demo.service.IUserService;
 import com.example.demo.service.IWxService;
-import com.example.demo.service.impl.WxService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -41,21 +35,35 @@ public class WxController {
         String openId = map.get("openid");
         System.out.println("openId=     "+openId);
         //用openId去微信表查有没有数据，没有插入，在得到userId
-        Wx wx = wxService.getUserId(openId);
+        UserWx userWx = wxService.getUserId(openId);
 
         Map<Object,Object> retmap = new HashMap<>();
-        if(wx != null){
-            retmap.put("userId",wx.getUserId());
-            retmap.put("user",iUserService.selectByUserId(wx.getUserId()));
+        if(userWx != null){
+            retmap.put("userId",userWx.getUserId());
+            retmap.put("user",iUserService.selectByUserId(userWx.getUserId()));
             return retmap;
         }else{
-            wx = new Wx();
-            wx.setOpenId(openId);
-            wxService.insertUserId(wx);
-            wx = wxService.getUserId(openId);
-            retmap.put("userId",wx.getUserId());
+            userWx = new UserWx();
+            userWx.setOpenId(openId);
+            wxService.insertUserId(userWx);
+            userWx = wxService.getUserId(openId);
+            retmap.put("userId",userWx.getUserId());
             return retmap;
         }
-
     }
+
+    @PostMapping("/addUser")
+    public Object addUser(@RequestBody User user){
+        System.out.println(user.getUserId());
+        System.out.println(user.getUserName());
+        System.out.println(user.getAvatarUrl());
+        System.out.println(user.getPhone());
+        System.out.println(user.getLoginTime());
+        System.out.println(user.getRegTime());
+        iUserService.insertUser(user);
+        Map<String, String> map = new HashMap<>();
+        map.put("userid",String.valueOf(user.getUserId()));
+        return map;
+    }
+
 }

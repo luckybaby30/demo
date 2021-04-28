@@ -1,15 +1,15 @@
 package com.example.demo.dao;
 
-import com.example.demo.domain.Wx;
+import com.example.demo.domain.UserWx;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 @Mapper
-
+@Repository
 public interface WxDao {
 
-    Wx getUserId(String openId);
+    UserWx getUserId(String openId);
 
-    void insertUserId(Wx wx);
+    void insertUserId(UserWx userWx);
 
 }
